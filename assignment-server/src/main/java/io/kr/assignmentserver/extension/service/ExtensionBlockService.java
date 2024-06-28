@@ -1,0 +1,23 @@
+package io.kr.assignmentserver.extension.service;
+
+import io.kr.assignmentserver.extension.controller.dto.DeleteExtensionDto;
+import io.kr.assignmentserver.extension.controller.dto.InsertExtensionDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class ExtensionBlockService {
+
+    private final RedisTemplate<String, String> redisTemplate;
+
+    public List<String> findExtension(String key) {
+        return redisTemplate.opsForList().range(key, 0, -1);
+    }
+
+}
