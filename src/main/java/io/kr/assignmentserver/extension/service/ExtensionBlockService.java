@@ -2,6 +2,7 @@ package io.kr.assignmentserver.extension.service;
 
 import io.kr.assignmentserver.extension.controller.dto.DeleteExtensionDto;
 import io.kr.assignmentserver.extension.controller.dto.InsertExtensionDto;
+import io.kr.assignmentserver.extension.service.common.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,12 +21,14 @@ public class ExtensionBlockService {
         return redisTemplate.opsForList().range(key, 0, -1);
     }
 
-    public void saveExtension(InsertExtensionDto dto) {
+    @DistributedLock(hashKey = "#hashKey", field = "#field")
+    public void saveExtension(String hashKey, String field, InsertExtensionDto dto) {
         validateDuplicatedExtension(dto);
         redisTemplate.opsForList().rightPush(dto.getKey(), dto.getExtension());
     }
 
-    public void deleteExtension(DeleteExtensionDto dto) {
+    @DistributedLock(hashKey = "#hashKey", field = "#field")
+    public void deleteExtension(String hashKey, String field, DeleteExtensionDto dto) {
         redisTemplate.opsForList().remove(dto.getKey(), 1, dto.getExtension());
     }
 

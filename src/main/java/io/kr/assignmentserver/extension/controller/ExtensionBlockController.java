@@ -27,13 +27,13 @@ public class ExtensionBlockController {
     @Operation(summary = "insertExtension")
     @PutMapping("/v1/insert/extension")
     public ResponseEntity<Void> insertExtension(@RequestBody InsertExtensionDto dto) {
-        extensionBlockService.saveExtension(dto);
+        extensionBlockService.saveExtension(dto.getKey() + ":key", dto.getKey(), dto);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/v1/delete/extension")
     public ResponseEntity<Void> deleteExtension(@RequestBody DeleteExtensionDto dto) {
-        extensionBlockService.deleteExtension(dto);
+        extensionBlockService.deleteExtension(dto.getKey() + ":key", dto.getKey(), dto);
         return ResponseEntity.ok().build();
     }
 }
