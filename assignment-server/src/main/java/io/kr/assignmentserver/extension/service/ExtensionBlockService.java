@@ -20,4 +20,15 @@ public class ExtensionBlockService {
         return redisTemplate.opsForList().range(key, 0, -1);
     }
 
+    public void saveExtension(InsertExtensionDto dto) {
+        validateDuplicatedExtension(dto);
+        redisTemplate.opsForList().rightPush(dto.getKey(), dto.getExtension());
+    }
+
+    private void validateDuplicatedExtension(InsertExtensionDto dto) {
+        List<String> list = findExtension(dto.getKey());
+        if(list.contains(dto.getExtension())) {
+            throw new RuntimeException("이미 존재하는 확장자예요.");
+        }
+    }
 }

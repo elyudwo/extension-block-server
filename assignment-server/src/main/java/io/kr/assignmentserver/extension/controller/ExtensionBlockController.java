@@ -23,4 +23,11 @@ public class ExtensionBlockController {
     public ResponseEntity<List<String>> findExtension(@RequestHeader(name = "key") String key) {
         return ResponseEntity.ok(extensionBlockService.findExtension(key));
     }
+
+    @Operation(summary = "insertExtension")
+    @PutMapping("/v1/insert/extension")
+    public ResponseEntity<Void> insertExtension(@RequestBody InsertExtensionDto dto) {
+        extensionBlockService.saveExtension(dto);
+        return ResponseEntity.ok().build();
+    }
 }
