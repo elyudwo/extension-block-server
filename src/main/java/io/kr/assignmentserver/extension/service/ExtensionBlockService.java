@@ -27,7 +27,6 @@ public class ExtensionBlockService {
         redisTemplate.opsForList().rightPush(dto.getKey(), dto.getExtension());
     }
 
-    @DistributedLock(hashKey = "#hashKey", field = "#field")
     public void deleteExtension(String hashKey, String field, DeleteExtensionDto dto) {
         redisTemplate.opsForList().remove(dto.getKey(), 1, dto.getExtension());
     }
