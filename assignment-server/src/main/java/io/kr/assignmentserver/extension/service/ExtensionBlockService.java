@@ -25,6 +25,10 @@ public class ExtensionBlockService {
         redisTemplate.opsForList().rightPush(dto.getKey(), dto.getExtension());
     }
 
+    public void deleteExtension(DeleteExtensionDto dto) {
+        redisTemplate.opsForList().remove(dto.getKey(), 1, dto.getExtension());
+    }
+
     private void validateDuplicatedExtension(InsertExtensionDto dto) {
         List<String> list = findExtension(dto.getKey());
         if(list.contains(dto.getExtension())) {

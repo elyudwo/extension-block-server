@@ -30,4 +30,10 @@ public class ExtensionBlockController {
         extensionBlockService.saveExtension(dto);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/v1/delete/extension")
+    public ResponseEntity<Void> deleteExtension(@RequestBody DeleteExtensionDto dto) {
+        extensionBlockService.deleteExtension(dto);
+        return ResponseEntity.ok().build();
+    }
 }
