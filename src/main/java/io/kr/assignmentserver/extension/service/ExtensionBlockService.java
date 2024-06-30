@@ -51,8 +51,13 @@ public class ExtensionBlockService {
 
     private void validateExtensionCount(InsertExtensionDto dto) {
         List<String> list = findExtension(dto.getKey());
-        if(list.size() >= 200) {
+        List<String> customExtensions = list.stream()
+                .filter(ext -> !ExtensionBlockService.FIXED_ITEMS.contains(ext))
+                .toList();
+
+        if (customExtensions.size() >= 200) {
             throw new RuntimeException("커스텀 확장자는 200개 까지만 추가할 수 있어요.");
         }
     }
+
 }
