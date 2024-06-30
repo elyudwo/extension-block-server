@@ -23,6 +23,7 @@ public class ExtensionBlockService {
 
     @DistributedLock(hashKey = "#hashKey", field = "#field")
     public void saveExtension(String hashKey, String field, InsertExtensionDto dto) {
+        validateExtensionCount(dto);
         validateDuplicatedExtension(dto);
         redisTemplate.opsForList().rightPush(dto.getKey(), dto.getExtension());
     }
@@ -35,6 +36,13 @@ public class ExtensionBlockService {
         List<String> list = findExtension(dto.getKey());
         if(list.contains(dto.getExtension())) {
             throw new RuntimeException("이미 존재하는 확장자예요.");
+        }
+    }
+
+    private void validateExtensionCount(InsertExtensionDto dto) {
+        List<String> list = findExtension(dto.getKey());
+        if(list.size() >= 200) {
+            throw new RuntimeException("커스텀 확장자는 200개 까지만 추가할 수 있어요.");
         }
     }
 }
