@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -17,8 +19,16 @@ public class ExtensionBlockService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
+    private static final List<String> FIXED_ITEMS = Arrays.asList(
+            "bat", "cmd", "com", "cpl", "exe", "scr", "js"
+    );
+
     public List<String> findExtension(String key) {
         return redisTemplate.opsForList().range(key, 0, -1);
+    }
+
+    public List<String> findFixedExtension() {
+        return new ArrayList<>(FIXED_ITEMS);
     }
 
     @DistributedLock(hashKey = "#hashKey", field = "#field")

@@ -18,10 +18,16 @@ public class ExtensionBlockController {
 
     private final ExtensionBlockService extensionBlockService;
 
-    @Operation(summary = "findExtension")
+    @Operation(summary = "find-extension")
     @GetMapping("/v1/find/extension")
     public ResponseEntity<List<String>> findExtension(@RequestHeader(name = "key") String key) {
         return ResponseEntity.ok(extensionBlockService.findExtension(key));
+    }
+
+    @Operation(summary = "find-fixed-extension")
+    @GetMapping("/v1/find/fixed-extension")
+    public ResponseEntity<List<String>> findFixedExtension() {
+        return ResponseEntity.ok(extensionBlockService.findFixedExtension());
     }
 
     @Operation(summary = "insertExtension")
